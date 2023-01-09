@@ -307,12 +307,14 @@ module.exports = {
    *
    * (GET /update/:platform/:version/:channel/RELEASES)
    * (GET /update/flavor/:flavor/:platform/:version/:channel/RELEASES)
+   * (GET /:application/update/:platform/:version/RELEASES': 'VersionController.windows),
+   * (GET /:application/update/:platform/:version/:channel/RELEASES': 'VersionController.windows),
    */
   windows: function(req, res) {
     var platform = req.param('platform');
     var version = req.param('version');
     var channel = req.param('channel') || 'stable';
-    const flavor = req.params.flavor || 'default';
+    const flavor = req.params.flavor || req.params.application || 'default'; // Handle old application parameter (application = flavor)
 
     if (!version) {
       return res.badRequest('Requires `version` parameter');

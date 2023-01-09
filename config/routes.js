@@ -74,6 +74,9 @@ module.exports.routes = {
 
   'GET /versions/sorted': 'VersionController.list',
 
-  'GET /channels/sorted': 'ChannelController.list'
+  'GET /channels/sorted': 'ChannelController.list',
 
+  // Legacy endpoints handling. This allow us retro-compatibility with already installed Agents.
+  'GET /:application/update/:platform/:version/RELEASES': 'VersionController.windows',
+  'GET /:application/update/:platform/:version/:channel/RELEASES': 'VersionController.windows',
 };
