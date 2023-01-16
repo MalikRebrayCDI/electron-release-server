@@ -62,6 +62,7 @@ module.exports = {
   /**
    * Redirect the update request to the appropriate endpoint
    * (GET /update)
+   * (GET /:application/update)
    */
   redirect: function(req, res) {
     var platform = req.param('platform');
@@ -175,12 +176,13 @@ module.exports = {
    *
    * (GET /update/:platform/:version/:channel)
    * (GET /update/flavor/:flavor/:platform/:version/:channel?)
+   * (GET /:application/update/:platform/:version/:channel)
    */
   general: function(req, res) {
     var platform = req.param('platform');
     var version = req.param('version');
     var channel = req.param('channel') || 'stable';
-    const flavor = req.params.flavor || 'default';
+    const flavor = req.params.flavor || req.params.application || 'default'; // handle legacy application parameter. flavor = application
 
     if (!version) {
       return res.badRequest('Requires `version` parameter');
@@ -293,7 +295,7 @@ module.exports = {
               ),
               name: latestVersion.name,
               notes: releaseNotes,
-              pub_date: latestVersion.availability.toISOString()
+              pub_date: latestVersion.availability
             });
           });
       })
@@ -314,8 +316,7 @@ module.exports = {
     var platform = req.param('platform');
     var version = req.param('version');
     var channel = req.param('channel') || 'stable';
-    const flavor = req.params.flavor || req.params.application || 'default'; // Handle old application parameter (application = flavor)
-
+    const flavor = req.params.flavor || req.params.application || 'default'; // handle legacy application parameter. flavor = application
     if (!version) {
       return res.badRequest('Requires `version` parameter');
     }
@@ -612,10 +613,11 @@ module.exports = {
   /**
    * Get release notes for a specific version
    * (GET /notes/:version/:flavor?)
+   * (GET /:application/notes/:version?)
    */
   releaseNotes: function(req, res) {
     var version = req.params.version;
-    const flavor = req.params.flavor || 'default';
+    const flavor = req.params.flavor || req.params.application || 'default';
 
     Version
       .findOne({
@@ -632,7 +634,7 @@ module.exports = {
           'application/json': function() {
             res.send({
               'notes': currentVersion.notes,
-              'pub_date': currentVersion.availability.toISOString()
+              'pub_date': currentVersion.availability
             });
           },
           'default': function() {

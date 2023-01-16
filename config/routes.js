@@ -70,13 +70,24 @@ module.exports.routes = {
   'GET /update/flavor/:flavor/:platform/:channel-mac.yml': 'VersionController.electronUpdaterMac',
   'GET /update/flavor/:flavor/:platform/:channel/latest-mac.yml': 'VersionController.electronUpdaterMac',
 
+
   'GET /notes/:version/:flavor?': 'VersionController.releaseNotes',
 
   'GET /versions/sorted': 'VersionController.list',
 
   'GET /channels/sorted': 'ChannelController.list',
 
-  // Legacy endpoints handling. This allow us retro-compatibility with already installed Agents.
+
+  // "App-aware" Legacy endpoints handling. This allow us retro-compatibility with already installed Agents.
+  'GET /:application/download/latest/:platform?': 'AssetController.download',
+  'GET /:application/download/channel/:channel/:platform?': 'AssetController.download',
+  'GET /:application/download/:version/:platform?/:filename?': 'AssetController.download',
+
+  'GET /:application/update': 'VersionController.redirect',
+  'GET /:application/update/:platform/:version': 'VersionController.general',
   'GET /:application/update/:platform/:version/RELEASES': 'VersionController.windows',
   'GET /:application/update/:platform/:version/:channel/RELEASES': 'VersionController.windows',
+  'GET /:application/update/:platform/:version/:channel': 'VersionController.general',
+  'GET /:application/notes/:version?': 'VersionController.releaseNotes'
+
 };

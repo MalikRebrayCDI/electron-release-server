@@ -25,13 +25,16 @@ module.exports = {
    * (GET /download/flavor/:flavor/latest/:platform?': 'AssetController.download')
    * (GET /download/flavor/:flavor/:version/:platform?/:filename?': 'AssetController.download')
    * (GET /download/flavor/:flavor/channel/:channel/:platform?': 'AssetController.download')
+   * (GET /:application/download/latest/:platform?': 'AssetController.download')
+   * (GET /:application/download/:version/:platform?/:filename?': 'AssetController.download')
+   * (GET /:application/download/channel/:channel/:platform?': 'AssetController.download')
    */
   download: function(req, res) {
     var channel = req.params.channel;
     var version = req.params.version || undefined;
     var filename = req.params.filename;
     var filetype = req.query.filetype;
-    const flavor = req.params.flavor || 'default';
+    const flavor = req.params.flavor || req.params.application || 'default';
 
     // We accept multiple platforms (x64 implies x32)
     var platforms;

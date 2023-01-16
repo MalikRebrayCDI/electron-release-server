@@ -3,13 +3,7 @@
 This version has been created to achieve one goal : Update the Electron Release Server to the latest update at this day with a legacy support for old URL such as 
 - `/:application/update/:platform/:version[/:channel]`
 
-The current project handles the following two endpoints : 
-
-- `GET /:application/update/:platform/:version/RELEASES': 'VersionController.windows'`,
-- `GET /:application/update/:platform/:version/:channel/RELEASES': 'VersionController.windows'`,
-
-It is not yet handling another OS than windows.
-The legacy supports only updating Agent.
+Check the commits history to see the recents modifications made to the project.
 
 # Electron Release Server
 [![GitHub stars](https://img.shields.io/github/stars/ArekSredzki/electron-release-server.svg)](https://github.com/ArekSredzki/electron-release-server/stargazers)
